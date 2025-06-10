@@ -26,6 +26,28 @@ public class Basic_Ex1 {
     // Autoboxing : 기본형 -> 객체형(참조형) 타입으로 자동 변환
     // Unboxing : 객체형 -> 기본형 타입으로 자동 변환
 
+    // Wrapper 클래스
+    // 기본형 || Wrapper 클래스
+    // boolean | Boolean
+    // char | Character
+    // byte | Byte
+    // short | Short
+    // int | Integer
+    // long | Long
+    // float | Float
+    // double | Double
+
+    // 예시 박싱
+    // int num = 10;
+    // 박싱, 기본형 -> 참조형(클래스타입)
+    // Integer intObj = Integer.valueOf(10); //수동으로
+    // Integer intObj2 = numl //자동으로 형변환
+
+    // 예시2 언박싱 , 참조형 -> 기본형
+    // Integer intObj = Integer.valueOf(10);
+    // int num = intObj.intvalue(); //수동으로 변경
+    // int num2 = intObj; //자동으로 변경
+
     // ============================================================================
 
 }
