@@ -60,7 +60,7 @@ public class Collection_Ex1 {
         System.out.println("하나 조회 : " + set.contains(1));
         // 전체 조회
         for (Integer integer : set) {
-            System.out.println("반복문을 이용해서 집합에 담아져 있는 값을 출력해보기 : " + set);
+            System.out.println("반복문을 이용해서 집합에 담아져 있는 값을 출력해보기 : " + integer);
         }
 
         // 자주 사용하는 옵션
