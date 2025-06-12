@@ -1,9 +1,9 @@
-package d250611.ui;
+package d250612.member_project.ui;
 
 import java.util.Scanner;
 
-import d250611.service.UserService_ArrayList_version;
-import d250611.service.UserService_HashMap_version;
+import d250612.member_project.service.UserService_ArrayList_version;
+import d250612.member_project.service.UserService_HashMap_version;
 
 public class MemberUI {
     public static void drawUI(Scanner scanner) {
@@ -19,29 +19,29 @@ public class MemberUI {
             scanner.nextLine(); // 개행 문자 제거
             switch (menu) {
                 case 1:
-                    // UserService_ArrayList_version.addUser(scanner); // 회원 추가
-                    UserService_HashMap_version.addUser(scanner); // 회원 추가
+                    UserService_ArrayList_version.addUser(scanner); // 회원 추가
+                    // UserService_HashMap_version.addUser(scanner); // 회원 추가
                     break;
                 case 2:
+                    UserService_ArrayList_version.viewUsers(); // 회원 조회
                     // UserService_HashMap_version.viewUsers(); // 회원 조회
-                    UserService_HashMap_version.viewUsers(); // 회원 조회
                     break;
                 case 3:
-                    // UserService_ArrayList_version.updateUser(scanner); // 회원 수정
-                    UserService_HashMap_version.updateUser(scanner); // 회원 수정
+                    UserService_ArrayList_version.updateUser(scanner); // 회원 수정
+                    // UserService_HashMap_version.updateUser(scanner); // 회원 수정
                     break;
                 case 4:
-                    // UserService_ArrayList_version.deleteUser(scanner); // 회원 삭제
-                    UserService_HashMap_version.deleteUser(scanner); // 회원 삭제
+                    UserService_ArrayList_version.deleteUser(scanner); // 회원 삭제
+                    // UserService_HashMap_version.deleteUser(scanner); // 회원 삭제
                     break;
                 case 5:
-                    // UserService_ArrayList_version.addDummyUsers(); // 더미 데이터 추가
-                    UserService_HashMap_version.addDummyUsers(); // 더미 데이터 추가
+                    UserService_ArrayList_version.addDummyUsers(); // 더미 데이터 추가
+                    // UserService_HashMap_version.addDummyUsers(); // 더미 데이터 추가
                     System.out.println("더미 데이터 5개가 추가되었습니다.");
                     break;
                 case 6:
+                    UserService_ArrayList_version.searchUser(scanner); // 회원 검색
                     // UserService_HashMap_version.searchUser(scanner); // 회원 검색
-                    UserService_HashMap_version.searchUser(scanner); // 회원 검색
                     System.out.println("회원 검색 기능이 실행되었습니다.");
                     break;
                 case 0:

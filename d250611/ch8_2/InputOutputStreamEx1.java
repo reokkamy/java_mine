@@ -11,7 +11,7 @@ public class InputOutputStreamEx1 {
 
     // 주의사항,
     // 1) 파일 입 출력, 의무적으로 , 예외처리를 해야함. try ~ catch ~ finally ,
-
+    // 2) close(), 자원반납해야함
     public static void main(String[] args) {
         // 키보드에서 한 글자를 입력받아 정수로 출력해보기.
         try {

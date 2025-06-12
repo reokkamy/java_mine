@@ -1,4 +1,4 @@
-package d250611.model;
+package d250611.member_project.model;
 
 public class Member {
     String name;
