@@ -452,5 +452,10 @@ public class _4SignupFrame extends JFrame {
         // 10명의 더미 회원 추가 확인 다이얼로그창 띄우기.
         JOptionPane.showMessageDialog(this, "10명의 더미 회원 추가!!");
     }
+
+    public void showDialog(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'showDialog'");
+    }
 }
 // =================================================================

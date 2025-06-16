@@ -9,16 +9,37 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
 
 import d250613.member_project.model.Member;
 import d250613.member_project.util.DateUtil;
+import d250613.web_structure.ui._4SignupFrame;
 
 public class _5MemberService {
     // 파일 불러오는 경로를 전역으로 설정.
     private static final String FILE_NAME = "member.txt"; // 회원 정보 저장 파일명, csv 형식
     // 파일에서 불러온 멤버의 모든 정보를 담아둘 임시 공간 리스트
     private ArrayList<Member> members = new ArrayList<>();
+
+    // 없는 부분 받아서 임시로 사용하기.
+    private DefaultTableModel tableModel;
+
+    private JTextField searchField;
+
+    public void setSignupFrame(_4SignupFrame signupFrame) {
+        this.signupFrame = signupFrame;
+    }
+
+    private _4SignupFrame signupFrame;
+
+    public void setTableModel(DefaultTableModel tableModel) {
+        this.tableModel = tableModel;
+    }
+
+    public void setSearchField(JTextField searchField) {
+        this.searchField = searchField;
+    }
 
     public ArrayList<Member> getMembers() {
         return members;
@@ -44,7 +65,11 @@ public class _5MemberService {
             } catch (Exception e) {
                 // 웹 , alert("경고창") 기능,
                 // 자바, 간단히 구현 하기. 알림창 띄우기, this: 현재 윈도우 창 JFrame
-                JOptionPane.showMessageDialog(this, "파일 생성 오류 : " + e.getMessage());
+                // 기존 클래스에서는, JFrame 상속을 받아서, 기능을 사용할 수있지만, 지금은 분리가 되어서,
+                // 따로 구현이 하거나, 잠시 주석.
+                // JOptionPane.showMessageDialog(this, "파일 생성 오류 : " + e.getMessage());
+                // System.out.println("다른 방법으로 알림등 알려줄 예정");
+                System.out.println(e.getMessage());
                 return; // 현재 메서드 나가기
                 // e.printStackTrace();
             }
@@ -71,7 +96,10 @@ public class _5MemberService {
 
         Exception e) {
             // 오류 발생시 간단히 알림 창띄우기.
-            JOptionPane.showMessageDialog(this, "파일 읽기 오류 : " + e.getMessage());
+            // JOptionPane.showMessageDialog(this, "파일 읽기 오류 : " + e.getMessage());
+            // JOptionPane.showMessageDialog(this, "파일 생성 오류 : " + e.getMessage());
+            // System.out.println("다른 방법으로 알림등 알려줄 예정");
+            System.out.println(e.getMessage());
             // TODO: handle exception
         }
     }
@@ -92,7 +120,10 @@ public class _5MemberService {
 
         Exception e) {
             // 오류 발생시 간단히 알림 창띄우기.
-            JOptionPane.showMessageDialog(this, "파일 저장 오류 : " + e.getMessage());
+            // JOptionPane.showMessageDialog(this, "파일 저장 오류 : " + e.getMessage());
+            // JOptionPane.showMessageDialog(this, "파일 생성 오류 : " + e.getMessage());
+            // System.out.println("다른 방법으로 알림등 알려줄 예정");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -114,7 +145,11 @@ public class _5MemberService {
         // 변경사항 새로고침, 즉 다 지우고, 전체 회원을 다시 그리기.
         refreshTable();
         // 10명의 더미 회원 추가 확인 다이얼로그창 띄우기.
-        JOptionPane.showMessageDialog(this, "10명의 더미 회원 추가!!");
+        // JOptionPane.showMessageDialog(this, "10명의 더미 회원 추가!!");
+        // JOptionPane.showMessageDialog(this, "파일 생성 오류 : " + e.getMessage());
+        // System.out.println("다른 방법으로 알림등 알려줄 예정");
+        signupFrame.showDialog("10명의 더미 회원 추가!!");
+
     }
 
     // 3) JTable에 회원 데이터 반영 (새로고침), 전체 모든 회원 조회
@@ -164,7 +199,10 @@ public class _5MemberService {
 
         // 검색된 결과가 없다면, 알림창으로 검색 결과가 없습니다.
         if (resultList.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "검색 결과가 없습니다.");
+            // JOptionPane.showMessageDialog(this, "검색 결과가 없습니다.");
+            // JOptionPane.showMessageDialog(this, "파일 생성 오류 : " + e.getMessage());
+            signupFrame.showDialog("검색 결과가 없습니다.");
+            // System.out.println("다른 방법으로 알림등 알려줄 예정");
         }
 
     }

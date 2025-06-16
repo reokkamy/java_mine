@@ -1,6 +1,6 @@
 {
-    "editor.tokenColorCustomizations": {
-        "comments": "",
-        "textMateRules": []
-    }
+    // 프로젝트 루트 기준 lib/*.jar 모두참조
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar" //lib폴더하위에 모든 폴더및 .jar파일을 참조하겠다
+    ]
 }
