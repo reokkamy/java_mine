@@ -39,3 +39,8 @@ select *
 select *
   from member501
  where name like '%이상용%';
+
+ -- 전체 조회, 아이디 기준으로 내림차순, 최신 등록일 순으로 
+select *
+  from member501
+ order by id desc;
