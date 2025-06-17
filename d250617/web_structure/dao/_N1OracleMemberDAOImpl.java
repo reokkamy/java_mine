@@ -219,14 +219,74 @@ public class _N1OracleMemberDAOImpl implements _9DAO_Inaterface {
 
     @Override
     public boolean delete(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        boolean isDeleted = false;
+        try {
+            conn = _4DBConnectionManager.getConnection();
+            String query = "DELETE FROM MEMBER501 WHERE ID = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, id);
+            int result = pstmt.executeUpdate();
+            if (result > 0) {
+                System.out.println(result + " 개의 데이터가 삭제됨");
+                isDeleted = true;
+            } else {
+                System.out.println("ID " + id + " 에 해당하는 데이터가 없습니다");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            _4DBConnectionManager.close(null, pstmt, conn);
+        }
+        return isDeleted; // ??
     }
 
     @Override
     public _10Member findByName(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByName'");
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        _10Member searchMember = null;
+        try {
+            conn = _4DBConnectionManager.getConnection();
+            // 변경.
+            String query = "SELECT * FROM MEMBER501 WHERE NAME LIKE ?";
+            pstmt = conn.prepareStatement(query);
+            String searchKeyword = name, email;
+            pstmt.setString(1, "%" + searchKeyword + "%");
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String searchName = rs.getString("name");
+                String searchEmail = rs.getString("email");
+               String password2 = rs.getString("password");
+               String reg_date = DateUtil.getCurrentDateTime();;
+                // 콘솔에서, 데이터 조회 확인.
+                System.out.println("데이터 검색 결과 : ");
+                System.out.println("id : " + id);
+                System.out.println("name : " + searchName);
+                System.out.println("email : " + searchEmail);
+               
+                System.out.println("password2 : " + password2);
+                
+                System.out.println("reg_date : " + reg_date);
+                    break;
+            }
+           if (searchMember != null) {
+            System.out.println("데이터 검색 성공.");
+        } else {
+            System.out.println( searchKeyword + " 에 해당하는 데이터가 없습니다.");
+        }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            _4DBConnectionManager.close(null, pstmt, conn);
+        }
+        return null;
     }
 
 }

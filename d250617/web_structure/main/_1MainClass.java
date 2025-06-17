@@ -3,7 +3,6 @@ package d250617.web_structure.main;
 import javax.swing.SwingUtilities;
 
 import d250617.web_structure.ui._2IntroFrame;
-import d250617.web_structure.util.InsertDb;
 
 public class _1MainClass {
     public static void main(String[] args) {
@@ -12,7 +11,7 @@ public class _1MainClass {
         // 순서1
         SwingUtilities.invokeLater(() -> new _2IntroFrame());
 
-        InsertDb login = new InsertDb();
+      
 
     }
 }
