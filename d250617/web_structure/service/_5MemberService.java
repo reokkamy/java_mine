@@ -61,9 +61,31 @@ public class _5MemberService {
         return members;
     }
 
+    // 0617, 회원가입 변경 전, 파일에 쓰는 버전.
     public void addMember(_10Member member) {
         members.add(member);
         saveMembersToFile();
+    }
+
+    // 0617, 회원가입 변경 후
+    public void addMemberDB(_10Member member) {
+        // 디비에 쓰는 기능을 사용하기.
+        boolean result = dao.insert(member);
+        // System.out.println("회원 가입 완료");
+    }
+
+    // 0617, 회원 수정시, 한명의 회원 정보를 가져오는 기능.
+    public _10Member getMemberOne(int member_id) {
+        _10Member member = dao.findById(member_id);
+        return member;
+    }
+
+    // 0617, 회원 수정, 디비에 반영하기.
+    // 0617, 회원 수정 디버깅 2,
+    public void updateMember(_10Member member) {
+        System.out.println("_5MemberService 파일 회원 수정 데이터 확인 :");
+        System.out.println(member);
+        dao.update(member);
     }
 
     // 0617 순서3, 해당 기능 수정.

@@ -218,9 +218,23 @@ public class _4SignupFrame extends JFrame {
             // 인스턴스
             // _10Member member = new _10Member(name, password, email, regDate);
             // members.add(member);
-            service.addMember(null);
+            // 0617, 회원가입 적용 변경 전
+            // service.addMember(null);
+            // JOptionPane.showMessageDialog(this, "회원 가입 되었습니다.");
+            // service.saveMembersToFile();
+
+            // 0617, 회원가입 적용 변경 후
+            // 1) 회원가입 화면에서 넘겨 받은 데이터 -> member 객체 생성
+            // 매개변수에서 id 부분은 큰 의미가 없다 -> 왜? 디비에 넣을 때, 필요 없어서, -> 자동생성이라서
+            _10Member member = new _10Member(1, name, email, password, regDate);
+            // 2) insert 메서드에, 입력받은 회원 정보 member 전달,
+            service.addMemberDB(member);
             JOptionPane.showMessageDialog(this, "회원 가입 되었습니다.");
-            service.saveMembersToFile();
+
+            // 0617 , 회원 가입 후, 변경 사항 부분에 추가
+            // 회원 가입 후, 디비에서 변경된 데이터를 다시 불러오기
+            service.loadMembersFromDB();
+
             // 변경사항 새로고침, 즉 다 지우고, 전체 회원을 다시 그리기.
             service.refreshTable();
         }
@@ -228,8 +242,23 @@ public class _4SignupFrame extends JFrame {
 
     // 7) 회원 수정 창
     private void showUpdateDialog() {
+        // 0617, 회원 수정 변경 전,
         // 테이블 상에서, 선택된 행의 번호를 가져와서, 수정 작업,
         int row = memberTable.getSelectedRow();
+
+        // 0617, 회원 수정 변경 후,
+        // 테이블 상에서, 선택된 실제 ID 값만 가져오기,
+        Object value = memberTable.getValueAt(row, 0);
+        System.out.println("클릭시 가져온 값 확인 테스트 : " + value);
+        // 실제 멤버의 아이디를 , int 타입으로 변환.
+        // 전역으로 사용할 , 변환된 ID를 따로 선언
+        int member_id;
+        if (value instanceof Integer) {
+            member_id = ((Integer) value).intValue();
+            System.out.println("선택된 ID 정수화 : " + member_id);
+        }
+        member_id = ((Integer) value).intValue();
+        System.out.println("선택된 ID 정수화 2: " + member_id);
         // 유효성 체크.
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "수정 할 회원을 선택하세요.");
@@ -237,7 +266,16 @@ public class _4SignupFrame extends JFrame {
         }
         // 전체 회원 목록 리스트에, 해당 회원 정보를 가져오기. .
         // Member oldMember = members.get(row);
-        _10Member oldMember = service.getMembers().get(row);
+
+        // 0617 , 회원 수정 변경 전,
+        // 단순 리스트에 등록된 순서로 데이터를 가져오고 있음.
+        // _10Member oldMember = service.getMembers().get(row);
+
+        // 0617 , 회원 수정 변경 후,
+        // 실제 데이터에서, 해당 ID 번호로 회원의 정보를 가져오기.
+        // 여기서, 한명의 회원 정보를 가져오는 DAO 메서드가 필요함.
+        // 추가 작업 필요함. -> 한명 회원 정보 가져오기 작업.
+        _10Member oldMember = service.getMemberOne(member_id);
 
         // 이름, 이메일, 패스워드, 입력 창(한줄 공간)
         // 가입시에, 새롭게 내용을 입력을 했다면,
@@ -290,11 +328,35 @@ public class _4SignupFrame extends JFrame {
             // 가입시
             // Member member = new Member(name, password, email, regDate);
             // 수정 할 경우
+
+            // 0617, 회원 수정, 변경 전,
+            // oldMember.setName(name);
+            // oldMember.setEmail(email);
+            // oldMember.setPassword(password);
+            // // oldMember.setRegDate(regDate);
+            // service.saveMembersToFile();
+            // // 변경사항 새로고침, 즉 다 지우고, 전체 회원을 다시 그리기.
+            // service.refreshTable();
+
+            // 0617, 회원 수정, 변경 후,
+            // 1) 화면에서 변경할 데이터를 멤버에 담기.
             oldMember.setName(name);
             oldMember.setEmail(email);
             oldMember.setPassword(password);
+
+            // 0617, 회원 수정 디버깅 1,
+            // 디비에 수정 된 내용 반영하기 전에, 데이터 확인.
+            System.out.println("수정 하기전 데이터 확인 : " + oldMember);
+
             // oldMember.setRegDate(regDate);
-            service.saveMembersToFile();
+            // 2) 수정하는 메서드에, 변경할 내용의 멤버 객체 전달 + 수정할 인덱스도 같이 넘기기.!@!
+            service.updateMember(oldMember);
+            // 수정한 데이터 반영하기.
+
+            // 0617 , 회원 수정 후, 변경 사항 부분에 반영
+            // 회원 변경 후, 디비에서 변경된 데이터를 다시 불러오기
+            service.loadMembersFromDB();
+
             // 변경사항 새로고침, 즉 다 지우고, 전체 회원을 다시 그리기.
             service.refreshTable();
         }

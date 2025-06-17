@@ -41,6 +41,7 @@ public interface _9DAO_Inaterface {
     _10Member findById(int id);
 
     // 3) 회원 추가
+    // 화면에서 입력 받은 정보 -> member -> 디비 입력 -> true
     boolean insert(_10Member member);
 
     // 4) 회원 수정
