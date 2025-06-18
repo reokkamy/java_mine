@@ -51,6 +51,9 @@ public interface _9DAO_Inaterface {
     boolean delete(int id);
 
     // 6) 회원 검색
-    _10Member findByName(String name);
+    // 0618, 검색 작업 중1
+    // 리턴을 한명의 인스턴스만 받구나, 수정하자, 리스트로
+    // _10Member findByName(String name);
+    List<_10Member> findByName(String name);
 
 }

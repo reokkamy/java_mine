@@ -88,6 +88,14 @@ public class _5MemberService {
         dao.update(member);
     }
 
+    // 0618, , 회원 삭제
+    public void deleteMember(int member_id) {
+        System.out.println("삭제 진행하기. ");
+        // dao에서, 삭제하는 기능 구현.
+        boolean result = dao.delete(member_id);
+        System.out.println("삭제 했나요? : " + result);
+    }
+
     // 0617 순서3, 해당 기능 수정.
     // 변경 전
     // 1) csv 파일에서 회원 목록 불러오기. loadMembersFromFile()
@@ -154,6 +162,8 @@ public class _5MemberService {
     }
 
     // 3) JTable에 회원 데이터 반영 (새로고침), 전체 모든 회원 조회
+    // tableModel : 가상 테이블, 회원 정보를 , 테이블, 행,열 구성.
+    // JTable : 출력용 테이블 연결.
     public void refreshTable() {
         tableModel.setRowCount(0); // 기존 데이터 모두 제거, 모든 행 삭제,
         for (_10Member member : members) {
@@ -173,19 +183,35 @@ public class _5MemberService {
     }
 
     // 4) 검색 결과 테이블에 반영, 기존 전체데이터를 삭제하고, 검색된 결과 멤버들만 조회,
-    public void showSearchResults(ArrayList<_10Member> results) {
+    // 변경 전,
+    // 0618, 회원 수정 부분,
+    // public void showSearchResults(ArrayList<_10Member> results) {
+    // tableModel.setRowCount(0);
+    // for (_10Member member : results) {
+    // // tableModel 에, 데이터 쓰기, 기본 데이터 테이블 데이터를 쓰고, -> 출력용 테이블 연결하기.
+    // tableModel.addRow(new Object[] {
+    // // member.getName(), member.getEmail(), member.getPassword(),
+    // // member.getRegDate()
+    // });
+    // }
+    // }
+
+    // 변경 후,
+    // 0618, 회원 수정 부분,
+    public void showSearchResults(List<_10Member> results) {
         tableModel.setRowCount(0);
         for (_10Member member : results) {
             // tableModel 에, 데이터 쓰기, 기본 데이터 테이블 데이터를 쓰고, -> 출력용 테이블 연결하기.
             tableModel.addRow(new Object[] {
-                    // member.getName(), member.getEmail(), member.getPassword(),
-                    // member.getRegDate()
+                    member.getId(), member.getName(), member.getEmail(), member.getPassword(),
+                    member.getReg_date()
             });
         }
     }
 
     // 5) 검색 기능 (이름 또는 이메일 검색어가 포함된 회원만 표시), 검색 결과만 표기.
-    public void searchMembers() {
+    // 변경 전, 파일 형식
+    public void searchMembersFile() {
         // 검색어 입력창에서, 검색어를 가져오기, 양쪽 공백 제거, 영어 인경우 모두 소문자로 변경하고
         String query = searchField.getText().trim().toLowerCase();
         // 유효성 체크. 검색어 비어 있는지 체크.
@@ -203,6 +229,41 @@ public class _5MemberService {
                 resultList.add(member);
             }
         }
+        // 검색 된 결과를, 화면에 출력하는 메서드에, 검색된 멤버 리스트를 넘겨주기.
+        showSearchResults(resultList);
+
+        // 검색된 결과가 없다면, 알림창으로 검색 결과가 없습니다.
+        if (resultList.isEmpty()) {
+            // JOptionPane.showMessageDialog(this, "검색 결과가 없습니다.");
+            // JOptionPane.showMessageDialog(this, "파일 생성 오류 : " + e.getMessage());
+            signupFrame.showDialog("검색 결과가 없습니다.");
+            // System.out.println("다른 방법으로 알림등 알려줄 예정");
+        }
+
+    }
+
+    // 0618, 디비에서 회원 정보 검색 후, 처리하기.
+    // 변경 후.
+    public void searchMembersDB() {
+        // 검색어 입력창에서, 검색어를 가져오기, 양쪽 공백 제거, 영어 인경우 모두 소문자로 변경하고
+        String query = searchField.getText().trim().toLowerCase();
+        // 유효성 체크. 검색어 비어 있는지 체크.
+        if (query.isEmpty()) {
+            refreshTable(); // 기본 전체 조회가 실행이 됨.
+            return;// 검색 기능 메서드 나가기,
+        }
+        // 임시로 담아둘 멤버 리스트 하나 정의.
+        List<_10Member> resultList = new ArrayList<>();
+        // ===========================================================
+        // 1) 디비에서, 검색된 회원 정보만 있는 리스트가 필요.
+        // 디비에서 회원 검색 -> 검색 된 내용을 멤버담고 -> 리스트에 담기.
+        // 결론, 검색된 회원의 객체가 들어있는 리스트만 필요함.
+        // 기능 구현 순서
+        // 1) 서비스 만들기 -> DAO 만들기 -> DAO 를 구현 클래스 구체적으로 기능 구현.
+        // 화면에서는 , 서비스를 호출 -> dao 호출.
+        resultList = dao.findByName(query);
+        // ===========================================================
+
         // 검색 된 결과를, 화면에 출력하는 메서드에, 검색된 멤버 리스트를 넘겨주기.
         showSearchResults(resultList);
 

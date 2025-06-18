@@ -123,6 +123,7 @@ public class _4SignupFrame extends JFrame {
         // service.loadMembersFromFile();
 
         // 0617 , 변경 후
+        // 디비에서 전체 데이터를 받고 -> 메모리에 멤버 리스트에 추가
         service.loadMembersFromDB();
 
         // 새로고침 기능 호출.
@@ -141,14 +142,28 @@ public class _4SignupFrame extends JFrame {
             service.refreshTable();
         });
         // 검색
-        searchBtn.addActionListener(e -> service.searchMembers());
+        // 변경 전, 검색 호출,
+        // 0618, 검색
+        // searchBtn.addActionListener(e -> service.searchMembers());
+
+        // 변경 후, 검색 호출,
+        // 0618, 검색
+        searchBtn.addActionListener(e -> service.searchMembersDB());
         // 검색 초기화
         resetBtn.addActionListener(e -> {
             searchField.setText("");
             service.refreshTable();
         });
         // 검색어에서, 엔터를 입력해도, 실행이 되게끔.
-        searchField.addActionListener(e -> service.searchMembers());
+
+        // 검색
+        // 변경 전, 검색 호출,
+        // 0618, 검색
+        // searchField.addActionListener(e -> service.searchMembers());
+
+        // 변경 후, 검색 호출,
+        // 0618, 검색
+        searchField.addActionListener(e -> service.searchMembersDB());
 
         // 더미 데이터 기능 추가 이벤트 리스너 연결.
         dummyBtn.addActionListener(e -> service.dummyMake());
@@ -372,6 +387,23 @@ public class _4SignupFrame extends JFrame {
             return;
         }
 
+        // 추가 작업, 0618,
+        // 삭제 작업, 기존에서 행번호가 아니라 멤버의 id 로 삭제 하기.
+        // ===================================================================
+        // 테이블 상에서, 선택된 실제 ID 값만 가져오기,
+        Object value = memberTable.getValueAt(row, 0);
+        System.out.println("삭제기능: 클릭시 가져온 값 확인 테스트 : " + value);
+        // 실제 멤버의 아이디를 , int 타입으로 변환.
+        // 전역으로 사용할 , 변환된 ID를 따로 선언
+        int member_id;
+        if (value instanceof Integer) {
+            member_id = ((Integer) value).intValue();
+            System.out.println("삭제기능: 선택된 ID 정수화 : " + member_id);
+        }
+        member_id = ((Integer) value).intValue();
+        System.out.println("삭제기능: 선택된 ID 정수화 2: " + member_id);
+        // ===================================================================
+
         // 회원 수정 확인 버튼 누를 경우, 확인 알림창 띄우기.
         // 확인 버튼 클릭 -> JOptionPane.showConfirmDialog() -> 특정 값을 반환.
         // 수락 -> 결과 OK 옵션 지정한 상수값 , 외우지, 이름으로 지정.
@@ -387,10 +419,24 @@ public class _4SignupFrame extends JFrame {
         if (result == JOptionPane.YES_OPTION) {
             // 리스트에 해당 멤버 삭제,
             // members.remove(row);
-            service.getMembers().remove(row);
-            service.saveMembersToFile();
+
+            // 변경전, 0618, 삭제 작업
+            // service.getMembers().remove(row);
+            // service.saveMembersToFile();
+            // // 변경사항 새로고침, 즉 다 지우고, 전체 회원을 다시 그리기.
+            // service.refreshTable();
+
+            // 변경후, 0618, 삭제 작업,
+            // 1) member_id로 디비에서, 회원을 삭제후,
+            // 화면에서 호출 -> 서비스 삭제기능 호출 -> dao 삭제기능 호출
+            service.deleteMember(member_id);
+            // 2) 다시 변경된 내용을 불러오기, 재사용.
+            // 회원 변경 후, 디비에서 변경된 데이터를 다시 불러오기
+            service.loadMembersFromDB();
+            // 3) 새로 고침. 재사용
             // 변경사항 새로고침, 즉 다 지우고, 전체 회원을 다시 그리기.
             service.refreshTable();
+
         }
     }
 

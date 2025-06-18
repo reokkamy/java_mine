@@ -10,8 +10,5 @@ public class _1MainClass {
         // 실행시,
         // 순서1
         SwingUtilities.invokeLater(() -> new _2IntroFrame());
-
-      
-
     }
 }
